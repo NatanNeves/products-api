@@ -1,18 +1,28 @@
 package com.natanneves.eccommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.jmx.export.annotation.ManagedAttribute;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 @Entity
 @Table(name = "categoria")
 public class Categoria implements Serializable {
+    private static final long serialVersionUID = 1L;
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+
+
+    @JsonManagedReference
+    @ManyToMany(mappedBy ="categorias")
+    private List<Produto> produtos =  new ArrayList<>();
 
     public Categoria (){
     }
