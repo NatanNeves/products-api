@@ -1,5 +1,6 @@
 package com.natanneves.eccommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.natanneves.eccommerce.domain.enums.TipoCliente;
 import jakarta.persistence.*;
 
@@ -16,14 +17,18 @@ public class Cliente {
     private Integer id;
     private String name;
     private String email;
-    private String cpfOuCnpj;
+
+    private String cpf_ou_cnpj;
     private Integer tipo;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
 
+    @JsonManagedReference
     @ElementCollection
     @CollectionTable(name = "TELEFONE")
+    @OneToMany(mappedBy = "cliente")
     private Set<Telefone> telefones = new HashSet<>();
 
     public Cliente(){
@@ -33,7 +38,7 @@ public class Cliente {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.cpfOuCnpj = cpfOuCnpj;
+        this.cpf_ou_cnpj = cpfOuCnpj;
         this.tipo = tipo.getCod();
     }
 
@@ -62,11 +67,11 @@ public class Cliente {
     }
 
     public String getCpfOuCnpj() {
-        return cpfOuCnpj;
+        return cpf_ou_cnpj;
     }
 
     public void setCpfOuCnpj(String cpfOuCnpj) {
-        this.cpfOuCnpj = cpfOuCnpj;
+        this.cpf_ou_cnpj = cpfOuCnpj;
     }
 
     public TipoCliente getTipo() {
