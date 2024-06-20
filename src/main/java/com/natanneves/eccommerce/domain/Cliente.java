@@ -1,20 +1,29 @@
 package com.natanneves.eccommerce.domain;
 
 import com.natanneves.eccommerce.domain.enums.TipoCliente;
+import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.util.*;
 
-public class Cliente implements Serializable {
-    private static final long serialVersionUID = 1L;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
+@Entity
+@Table(name = "cliente")
+public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Integer id;
     private String name;
     private String email;
     private String cpfOuCnpj;
     private Integer tipo;
 
+    @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "TELEFONE")
     private Set<Telefone> telefones = new HashSet<>();
 
     public Cliente(){
@@ -36,20 +45,12 @@ public class Cliente implements Serializable {
         this.id = id;
     }
 
-    public TipoCliente getTipoCliente() {
-        return TipoCliente.toEnum(tipo);
+    public String getName() {
+        return name;
     }
 
-    public void setTipoCliente(TipoCliente tipoCliente) {
-        this.tipo = tipoCliente.getCod();
-    }
-
-    public String getCpfOuCnpj() {
-        return cpfOuCnpj;
-    }
-
-    public void setCpfOuCnpj(String cpfOuCnpj) {
-        this.cpfOuCnpj = cpfOuCnpj;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -60,15 +61,37 @@ public class Cliente implements Serializable {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getCpfOuCnpj() {
+        return cpfOuCnpj;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCpfOuCnpj(String cpfOuCnpj) {
+        this.cpfOuCnpj = cpfOuCnpj;
     }
 
+    public TipoCliente getTipo() {
+        return TipoCliente.toEnum(tipo);
+    }
 
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public Set<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(Set<Telefone> telefones) {
+        this.telefones = telefones;
+    }
 
     @Override
     public boolean equals(Object o) {

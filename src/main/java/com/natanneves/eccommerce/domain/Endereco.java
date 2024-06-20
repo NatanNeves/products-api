@@ -1,32 +1,43 @@
 package com.natanneves.eccommerce.domain;
 
-import java.io.Serializable;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
-public class Endereco implements Serializable {
-    private static final long serialVersionUID = 1L;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
+@Entity
+@Table(name = "endereco")
+public class Endereco {
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Integer id;
     private String logradouro;
     private String numero;
     private String complemento;
     private String bairro;
     private String cep;
-    private Telefone telefone;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "cidade_id")
     private Cidade cidade;
+
 
     public Endereco(){
     }
 
-    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, Telefone telefone, Cliente cliente,  Cidade cidade) {
+    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, Cliente cliente, Cidade cidade) {
         this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
         this.bairro = bairro;
         this.cep = cep;
-        this.telefone = telefone;
         this.cliente = cliente;
         this.cidade = cidade;
     }
@@ -79,14 +90,6 @@ public class Endereco implements Serializable {
         this.cep = cep;
     }
 
-    public Telefone getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(Telefone telefone) {
-        this.telefone = telefone;
-    }
-
     public Cliente getCliente() {
         return cliente;
     }
@@ -95,12 +98,20 @@ public class Endereco implements Serializable {
         this.cliente = cliente;
     }
 
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Endereco endereco = (Endereco) o;
-        return Objects.equals(id, endereco.id);
+        return Objects.equals(id, endereco.id) && Objects.equals(bairro, endereco.bairro);
     }
 
     @Override
